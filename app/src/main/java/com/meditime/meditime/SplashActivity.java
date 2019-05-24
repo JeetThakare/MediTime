@@ -29,7 +29,8 @@ public class SplashActivity extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(SplashActivity.this, "Hello", Toast.LENGTH_SHORT).show();
+                Intent intent= new Intent(SplashActivity.this,SignupActivity.class);
+                startActivity(intent);
             }
         });
     }
