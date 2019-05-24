@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "662149061738",
+    "firebase_url": "https://medi-time-4b341.firebaseio.com",
+    "project_id": "medi-time-4b341",
+    "storage_bucket": "medi-time-4b341.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:662149061738:android:a4fc94d968b6e0e0",
+        "android_client_info": {
+          "package_name": "com.meditime.meditime"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "662149061738-ii6hnrgotvsm8bnt223e4jl7o95bpn2u.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKwanV0uQIaZ6wSfxZxHtSXMCygxzoXes"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "662149061738-ii6hnrgotvsm8bnt223e4jl7o95bpn2u.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
