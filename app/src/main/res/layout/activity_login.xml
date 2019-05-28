@@ -17,26 +17,26 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="66dp"
         android:layout_marginEnd="66dp"
-        android:layout_marginBottom="394dp"
+        android:layout_marginBottom="298dp"
         app:srcCompat="@drawable/meditime"
         tools:layout_editor_absoluteX="76dp"
         tools:layout_editor_absoluteY="175dp" />
 
     <EditText
         android:id="@+id/usernameTV"
-        android:layout_width="258dp"
+        android:layout_width="254dp"
         android:layout_height="65dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="76dp"
+        android:layout_marginStart="78dp"
         android:layout_marginEnd="78dp"
-        android:layout_marginBottom="282dp"
+        android:layout_marginBottom="193dp"
+        android:textStyle="italic"
+        android:textSize="24dp"
         android:background="#ffffff"
-        android:gravity="center_vertical"
-        android:hint="Username"
-        android:textSize="30dp"
-        android:textStyle="italic" />
+        android:ems="10"
+        android:hint="Username"/>
 
     <EditText
         android:id="@+id/passwordTV"
@@ -47,25 +47,26 @@
         android:layout_alignParentBottom="true"
         android:layout_marginStart="78dp"
         android:layout_marginEnd="78dp"
-        android:layout_marginBottom="152dp"
+        android:layout_marginBottom="118dp"
         android:background="#ffffff"
-        android:hint="Password"
-        android:textStyle="italic"
-        android:textSize="30dp"
         android:ems="10"
-        android:inputType="textPassword" />
+        android:hint="Password"
+        android:inputType="textPassword"
+        android:textSize="24dp"
+        android:textStyle="italic" />
 
     <Button
-        android:id="@+id/loginBtn"
+        android:id="@+id/loginButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="153dp"
-        android:layout_marginBottom="57dp"
+        android:layout_marginBottom="48dp"
         android:background="#ffffff"
         android:text="Login"
-        android:textSize="18dp"
         android:textColor="#0099ff"
+        android:textSize="18dp"
         android:textStyle="bold" />
+
 </RelativeLayout>
