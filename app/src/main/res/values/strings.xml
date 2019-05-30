@@ -22,4 +22,14 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
+    <string-array name="gender_dropdown">
+        <item>Male</item>
+        <item>Female</item>
+    </string-array>
+
+    <string-array name="role_dropdown">
+        <item>Patient</item>
+        <item>Doctor</item>
+    </string-array>
 </resources>

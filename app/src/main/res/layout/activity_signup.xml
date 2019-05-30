@@ -8,8 +8,8 @@
 
     <Button
         android:id="@+id/signupButton"
-        android:layout_width="175dp"
-        android:layout_height="wrap_content"
+        android:layout_width="173dp"
+        android:layout_height="62dp"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="8dp"
@@ -24,7 +24,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/splTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/doctorSpinner" />
 
     <TextView
         android:id="@+id/signupLabel"
@@ -43,12 +43,12 @@
 
     <TextView
         android:id="@+id/passwordLabel"
-        android:layout_width="90dp"
+        android:layout_width="110dp"
         android:layout_height="47dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:gravity="center_vertical"
         android:text="Password"
@@ -56,36 +56,37 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/passwordTxt"
-        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintHorizontal_bias="0.548"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/emailLabel" />
 
     <TextView
         android:id="@+id/roleLabel"
-        android:layout_width="90dp"
+        android:layout_width="110dp"
         android:layout_height="47dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:gravity="center_vertical"
         android:text="Role"
         android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/roleTxt"
+        app:layout_constraintEnd_toStartOf="@+id/spinner2"
+        app:layout_constraintHorizontal_bias="0.515"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirmPwdLabel" />
 
     <TextView
         android:id="@+id/confirmPwdLabel"
-        android:layout_width="90dp"
+        android:layout_width="110dp"
         android:layout_height="47dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:gravity="center_vertical"
         android:text="Confirm Password"
@@ -93,55 +94,54 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/confirmPwdText"
-        app:layout_constraintHorizontal_bias="0.517"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordLabel" />
 
     <TextView
-        android:id="@+id/specialityLabel"
-        android:layout_width="90dp"
+        android:id="@+id/doctorLabel"
+        android:layout_width="110dp"
         android:layout_height="47dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:gravity="center_vertical"
-        android:text="Speciality"
+        android:text="Doctor"
         android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/splTxt"
-        app:layout_constraintHorizontal_bias="0.517"
+        app:layout_constraintEnd_toStartOf="@+id/doctorSpinner"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/roleLabel" />
 
     <TextView
         android:id="@+id/genderLabel"
-        android:layout_width="90dp"
+        android:layout_width="110dp"
         android:layout_height="47dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:gravity="center_vertical"
         android:text="Gender"
         android:textColor="#000000"
         android:textSize="20sp"
         android:textStyle="bold"
-        app:layout_constraintEnd_toStartOf="@+id/genderTxt"
+        app:layout_constraintEnd_toStartOf="@+id/genderSpinner"
+        app:layout_constraintHorizontal_bias="0.548"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ageLabel" />
 
     <TextView
         android:id="@+id/emailLabel"
-        android:layout_width="90dp"
+        android:layout_width="110dp"
         android:layout_height="47dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:gravity="center_vertical"
         android:text="Email"
@@ -149,17 +149,18 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/emailTxt"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/genderLabel" />
 
     <TextView
         android:id="@+id/ageLabel"
-        android:layout_width="90dp"
+        android:layout_width="110dp"
         android:layout_height="47dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
         android:gravity="center_vertical"
         android:text="Age"
@@ -167,17 +168,18 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/ageTxt"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/nameLabel" />
 
     <TextView
         android:id="@+id/nameLabel"
-        android:layout_width="90dp"
+        android:layout_width="110dp"
         android:layout_height="47dp"
         android:layout_alignParentStart="false"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:gravity="center_vertical"
         android:text="Name"
@@ -185,14 +187,15 @@
         android:textSize="20sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toStartOf="@+id/nameTxt"
+        app:layout_constraintHorizontal_bias="0.516"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signupLabel" />
 
     <EditText
         android:id="@+id/nameTxt"
-        android:layout_width="225dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="230dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
         android:inputType="textPersonName"
@@ -200,20 +203,10 @@
         app:layout_constraintTop_toBottomOf="@+id/signupLabel" />
 
     <EditText
-        android:id="@+id/ageTxt"
-        android:layout_width="225dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:ems="10"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nameTxt" />
-
-    <EditText
         android:id="@+id/passwordTxt"
-        android:layout_width="225dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="230dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
         android:inputType="textPassword"
@@ -222,54 +215,68 @@
 
     <EditText
         android:id="@+id/confirmPwdText"
-        android:layout_width="225dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="230dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="18dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/passwordTxt" />
 
-    <EditText
-        android:id="@+id/genderTxt"
-        android:layout_width="225dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:ems="10"
+    <Spinner
+        android:id="@+id/genderSpinner"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="104dp"
+        android:dropDownWidth="wrap_content"
+        android:gravity="center"
+        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ageTxt" />
 
-    <EditText
-        android:id="@+id/roleTxt"
-        android:layout_width="225dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="24dp"
-        android:ems="10"
+    <Spinner
+        android:id="@+id/spinner2"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="92dp"
+        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/confirmPwdText" />
 
+    <Spinner
+        android:id="@+id/doctorSpinner"
+        style="@style/Base.Widget.AppCompat.Spinner.Underlined"
+        android:layout_width="230dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="20dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:descendantFocusability="blocksDescendants"
+        app:layout_constraintTop_toBottomOf="@+id/spinner2" />
+
     <EditText
-        android:id="@+id/splTxt"
-        android:layout_width="225dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="8dp"
+        android:id="@+id/ageTxt"
+        android:layout_width="230dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
+        android:inputType="number"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/roleTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/nameTxt" />
 
     <EditText
         android:id="@+id/emailTxt"
-        android:layout_width="225dp"
-        android:layout_height="47dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="230dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="24dp"
         android:ems="10"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/genderTxt" />
+        app:layout_constraintTop_toBottomOf="@+id/genderSpinner" />
 
 </android.support.constraint.ConstraintLayout>
