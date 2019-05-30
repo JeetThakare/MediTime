@@ -1,5 +1,6 @@
 package com.meditime.meditime;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -49,19 +50,17 @@ public class LoginActivity extends AppCompatActivity {
                                     Toast.makeText(LoginActivity.this, user.getEmail(), Toast.LENGTH_SHORT).show();
                                     // Open relevant activity
                                     // Code here ...
-
+                                    // startActivity(new Intent(LoginActivity.this, SplashActivity.class));
 
                                     // Open relevant activity
                                     finish();
                                 } else {
                                     // If sign in fails, display a message to the user.
                                     Log.w("LogIn", "signInWithEmail:failure", task.getException());
-                                    Toast.makeText(LoginActivity.this, "Authentication failed.",
+                                    Toast.makeText(LoginActivity.this, "Authentication failed." + task.getException().toString(),
                                             Toast.LENGTH_SHORT).show();
-                                    // updateUI(null);
-                                }
 
-                                // ...
+                                }
                             }
                         });
             }
