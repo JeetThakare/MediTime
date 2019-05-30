@@ -8,8 +8,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -18,10 +22,13 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+
 public class SignupActivity extends AppCompatActivity {
 
     Button signupButton;
-    EditText name, age, gender, email, password, confirmPwd, role, speciality;
+    TextView doctorLbl;
+    Spinner genderSpinner, roleSpinner, doctorSpinner;
+    EditText name, age, email, password, confirmPwd;
     private FirebaseAuth mAuth;
 
     @Override
@@ -29,16 +36,46 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
-        name=(EditText)findViewById(R.id.nameTxt);
-        age=(EditText)findViewById(R.id.ageTxt);
-        gender=(EditText)findViewById(R.id.genderTxt);
-        email=(EditText)findViewById(R.id.emailTxt);
-        password=(EditText)findViewById(R.id.passwordTxt);
-        confirmPwd=(EditText)findViewById(R.id.confirmPwdText);
-        role=(EditText)findViewById(R.id.roleTxt);
-        speciality=(EditText)findViewById(R.id.splTxt);
+        name=findViewById(R.id.nameTxt);
+        age=findViewById(R.id.ageTxt);
+        email=findViewById(R.id.emailTxt);
+        password=findViewById(R.id.passwordTxt);
+        confirmPwd=findViewById(R.id.confirmPwdText);
+
+        genderSpinner=findViewById(R.id.genderSpinner);
+        roleSpinner=findViewById(R.id.spinner2);
+        doctorSpinner=findViewById(R.id.doctorSpinner);
+
+        doctorLbl=findViewById(R.id.doctorLabel);
 
         signupButton=(Button)findViewById(R.id.signupButton);
+
+        ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this, R.array.gender_dropdown, android.R.layout.simple_spinner_item);
+        genderAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        genderSpinner.setAdapter(genderAdapter);
+
+        ArrayAdapter<CharSequence> roleAdapter = ArrayAdapter.createFromResource(this, R.array.role_dropdown, android.R.layout.simple_spinner_item);
+        roleAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        roleSpinner.setAdapter(roleAdapter);
+        doctorLbl=findViewById(R.id.doctorLabel);
+
+        final int currentChoice=roleSpinner.getSelectedItemPosition();
+
+        roleSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            public void onItemSelected(AdapterView<?> adapterView,View view,int i,long id) {
+                if(currentChoice==i){
+                    doctorLbl.setVisibility(View.VISIBLE);
+                    doctorSpinner.setVisibility(View.VISIBLE);
+                }else{
+                    doctorLbl.setVisibility(View.GONE);
+                    doctorSpinner.setVisibility(View.GONE);
+                }
+            }
+
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                return;
+            }
+        });
 
         mAuth = FirebaseAuth.getInstance();
         signupButton.setOnClickListener(new View.OnClickListener() {
