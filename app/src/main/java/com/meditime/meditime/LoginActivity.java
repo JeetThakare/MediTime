@@ -15,6 +15,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -23,6 +26,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginBtn;
 
     private FirebaseAuth mAuth;
+    private String role="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +50,38 @@ public class LoginActivity extends AppCompatActivity {
                                 if (task.isSuccessful()) {
                                     // Sign in success, update UI with the signed-in user's information
                                     Log.d("LogIn", "signInWithEmail:success");
+                                    System.out.println("signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    Toast.makeText(LoginActivity.this, user.getEmail(), Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(LoginActivity.this, user.getEmail()+"logged in successfully", Toast.LENGTH_LONG).show();
+
+                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
+                                    DocumentReference docRef = db.collection("users").document(user.getEmail()); // user is current user here
+                                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                DocumentSnapshot document = task.getResult();
+                                                if (document.exists()) {
+//                                                    Log.d(TAG, "DocumentSnapshot data: " + document.getString("Role"));
+                                                    role = document.getString("Role");
+                                                    System.out.println("role:"+ role);
+                                                    if(role.equals("Doctor")){
+                                                        startActivity(new Intent(LoginActivity.this, DrHome.class));
+                                                    }
+//                                                    else{
+//                                                        startActivity(new Intent(LoginActivity.this, PatientHome.class))
+//                                                    }
+                                                } else {
+                                                    Log.d("Login role check", "No such document");
+                                                }
+                                            } else {
+                                                Log.d("Login role check", "get failed with ", task.getException());
+                                            }
+
+                                        }
+                                    });
+
+
                                     // Open relevant activity
                                     // Code here ...
                                     // startActivity(new Intent(LoginActivity.this, SplashActivity.class));

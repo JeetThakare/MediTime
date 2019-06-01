@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".DrHome"></activity>
+        <activity android:name=".prescription"></activity>
+        <activity android:name=".DrHome" />
         <activity android:name=".medicineDetails">
 
             <!-- <intent-filter> -->

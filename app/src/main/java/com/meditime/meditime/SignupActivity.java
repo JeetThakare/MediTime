@@ -22,11 +22,15 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.firestore.util.ApiUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -40,7 +44,9 @@ public class SignupActivity extends AppCompatActivity {
     EditText name, age, email, password, confirmPwd;
     private FirebaseAuth mAuth;
     private DocumentReference mDocRef;
-
+    ArrayList<User> doctorsList=new ArrayList<>();
+    ArrayList<User> docs = new ArrayList<User>();
+    ArrayAdapter docsAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,29 +62,9 @@ public class SignupActivity extends AppCompatActivity {
         roleSpinner = findViewById(R.id.spinner2);
         doctorSpinner = findViewById(R.id.doctorSpinner);
         doctorLbl = findViewById(R.id.doctorLabel);
-
-        final ArrayAdapter<User> docsAdapter = new ArrayAdapter<>(this, R.layout.support_simple_spinner_dropdown_item, getDoctors());
-        doctorSpinner.setAdapter(docsAdapter);
-
-//        String compareValue="doctor";
-//        if (compareValue != null) {
-//            int spinnerPosition = docsAdapter.getPosition(compareValue);
-//            doctorSpinner.setSelection(spinnerPosition);
-//        }
-
-
-        doctorSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
-
+        ArrayList<User> doctorsList=getDoctors();
+        ArrayList<String> docname=new ArrayList<>();
+        System.out.println("docname size:"+ docname.size());
         signupButton = (Button) findViewById(R.id.signupButton);
 
         ArrayAdapter<CharSequence> genderAdapter = ArrayAdapter.createFromResource(this, R.array.gender_dropdown, android.R.layout.simple_spinner_item);
@@ -139,7 +125,10 @@ public class SignupActivity extends AppCompatActivity {
                                     userDetails.put("Gender", genderSpinner.getSelectedItem().toString());
                                     userDetails.put("Role", roleSpinner.getSelectedItem().toString());
                                     if (roleSpinner.getSelectedItem().toString().equals("Patient")) {
-                                        userDetails.put("Doctor", doctorSpinner.getSelectedItem().toString());
+
+                                        userDetails.put("Doctor", docs.get(doctorSpinner.getSelectedItemPosition()).getEmail());
+
+
                                     }
 
                                     mDocRef.set(userDetails).addOnSuccessListener(new OnSuccessListener<Void>() {
@@ -219,8 +208,8 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private ArrayList<User> getDoctors() {
+
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        final ArrayList<User> docs = new ArrayList<>();
         db.collection("users")
                 .whereEqualTo("Role", "Doctor")
                 .get()
@@ -229,15 +218,22 @@ public class SignupActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                docs.add(new User(document.getId(), document.getString("Name"), document.getString("Role"), document.getString("Gender")));
-                                //Log.d("DB", document.getId() + " => " + document.getData());
+                                System.out.println("adding doc name to list");
+                                System.out.println("ID :" + document.getId()+" Name : " + document.getString("Name")+ " Role : " + document.getString("Role")+ " Gender : " +document.getString("Gender"));
+                                User user=new User(document.getId(), document.getString("Name"), document.getString("Role"), document.getString("Gender"));
+                                docs.add(user);
                             }
+                            docsAdapter=new ArrayAdapter(SignupActivity.this,android.R.layout.simple_spinner_item, docs);
+                            doctorSpinner.setAdapter(docsAdapter);
                         } else {
                             Log.d("DB", "Error getting documents: ", task.getException());
                         }
                     }
                 });
+        System.out.println("docs outside :"+docs.size());
         return docs;
     }
+
+
 
 }
