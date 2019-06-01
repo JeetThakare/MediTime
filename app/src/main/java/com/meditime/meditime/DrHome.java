@@ -29,6 +29,7 @@ public class DrHome extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dr_home);
+        setTitle("My Patients");
         auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
         listView=(ListView)findViewById(R.id.listview);

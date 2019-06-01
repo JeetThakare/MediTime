@@ -3,11 +3,12 @@ package com.meditime.meditime;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class prescription extends AppCompatActivity {
+public class PrescriptionActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_prescription);
+        setTitle("Prescription");
     }
 }

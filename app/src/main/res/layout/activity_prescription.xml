@@ -4,6 +4,105 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".prescription">
+    tools:context=".PrescriptionActivity">
 
+    <TextView
+        android:id="@+id/genderTV"
+        android:layout_width="132dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/patientNameTV"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/genderLbl"
+        app:layout_constraintTop_toBottomOf="@+id/patientNameTV" />
+
+    <TextView
+        android:id="@+id/genderLbl"
+        android:layout_width="85dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/patientNameLbl"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="4dp"
+        android:layout_marginTop="8dp"
+        android:text="Gender:"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toEndOf="@+id/ageTV"
+        app:layout_constraintTop_toBottomOf="@+id/patientNameTV" />
+
+    <TextView
+        android:id="@+id/ageTV"
+        android:layout_width="70dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        app:layout_constraintStart_toEndOf="@+id/ageLbl"
+        app:layout_constraintTop_toBottomOf="@+id/patientNameTV" />
+
+    <TextView
+        android:id="@+id/ageLbl"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/patientNameLbl"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="8dp"
+        android:text="Age:"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/patientNameLbl" />
+
+    <TextView
+        android:id="@+id/patientNameTV"
+        android:layout_width="300dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="10dp"
+        android:textColor="#000000"
+        android:textSize="22sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/patientNameLbl"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/patientNameLbl"
+        android:layout_width="80dp"
+        android:layout_height="40dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="16dp"
+        android:text="Name:"
+        android:textColor="#000000"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ListView
+        android:layout_width="395dp"
+        android:layout_height="611dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </android.support.constraint.ConstraintLayout>

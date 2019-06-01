@@ -15,7 +15,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".prescription"></activity>
+        <activity android:name=".PrescriptionActivity"></activity>
         <activity android:name=".DrHome" />
         <activity android:name=".medicineDetails">
 
@@ -37,8 +37,7 @@
         <activity android:name=".LoginActivity" />
         <activity
             android:name=".MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar" />
+            android:label="@string/app_name" />
     </application>
 
 </manifest>
