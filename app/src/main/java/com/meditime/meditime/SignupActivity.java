@@ -166,14 +166,17 @@ public class SignupActivity extends AppCompatActivity {
     private boolean validateform() {
         if (name.getText().toString().isEmpty()) {
             name.setError("Name is required!");
+            name.requestFocus();
             return false;
         }
         if (age.getText().toString().isEmpty()) {
             age.setError("Age is required!");
+            age.requestFocus();
             return false;
         }
         if (email.getText().toString().isEmpty()) {
             email.setError("Email is required!");
+            email.requestFocus();
             return false;
         } else {
             String regExpn =
@@ -189,19 +192,30 @@ public class SignupActivity extends AppCompatActivity {
 
             if (!matcher.matches()) {
                 email.setError("Enter valid email!");
+                email.requestFocus();
                 return false;
             }
         }
         if (password.getText().toString().isEmpty()) {
             password.setError("Password is required!");
+            password.requestFocus();
+            return false;
+
+        }
+        if (password.getText().toString().length() < 6) {
+            password.setError("Password should be atleast 6 char long!");
+            password.requestFocus();
             return false;
         }
         if (confirmPwd.getText().toString().isEmpty()) {
-            confirmPwd.setError("This is required!");
+            confirmPwd.setError("Password is required!");
+            confirmPwd.requestFocus();
             return false;
         }
+
         if (!password.getText().toString().equals(confirmPwd.getText().toString())) {
             confirmPwd.setError("Password mismatch!");
+            confirmPwd.requestFocus();
             return false;
         }
         return true;
