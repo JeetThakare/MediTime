@@ -18,6 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.iid.FirebaseInstanceId;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -26,7 +27,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button loginBtn;
 
     private FirebaseAuth mAuth;
-    private String role="";
+    private String role = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +54,8 @@ public class LoginActivity extends AppCompatActivity {
                                     Log.d("LogIn", "signInWithEmail:success");
                                     System.out.println("signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    Toast.makeText(LoginActivity.this, user.getEmail()+"logged in successfully", Toast.LENGTH_SHORT).show();
+                                    Utils.setToken(FirebaseInstanceId.getInstance().getToken());
+                                    Toast.makeText(LoginActivity.this, user.getEmail() + "logged in successfully", Toast.LENGTH_SHORT).show();
 
                                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                                     DocumentReference docRef = db.collection("users").document(user.getEmail()); // user is current user here
@@ -65,8 +67,8 @@ public class LoginActivity extends AppCompatActivity {
                                                 if (document.exists()) {
 //                                                    Log.d(TAG, "DocumentSnapshot data: " + document.getString("Role"));
                                                     role = document.getString("Role");
-                                                    System.out.println("role:"+ role);
-                                                    if(role.equals("Doctor")){
+                                                    System.out.println("role:" + role);
+                                                    if (role.equals("Doctor")) {
                                                         startActivity(new Intent(LoginActivity.this, DrHome.class));
                                                     }
 //                                                    else{

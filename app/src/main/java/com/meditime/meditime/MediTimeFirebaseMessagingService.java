@@ -19,8 +19,6 @@ import com.google.firebase.messaging.RemoteMessage;
 import java.util.HashMap;
 
 public class MediTimeFirebaseMessagingService extends FirebaseMessagingService {
-    private FirebaseAuth mAuth;
-    private DocumentReference mDocRef;
 
     @Override
     public void onMessageReceived(RemoteMessage remoteMessage) {
@@ -46,29 +44,6 @@ public class MediTimeFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken(String token) {
         Log.d("FCM", "Refreshed token: " + token);
         super.onNewToken(token);
-        setToken(token);
-    }
-
-
-
-    private void setToken(String token) {
-        mAuth = FirebaseAuth.getInstance();
-        final FirebaseUser user = mAuth.getCurrentUser();
-        if(user ==  null){
-            return;
-        }
-        mDocRef = FirebaseFirestore.getInstance().document("users/" + user.getEmail());
-
-        mDocRef.update("token", token).addOnSuccessListener(new OnSuccessListener<Void>() {
-            @Override
-            public void onSuccess(Void aVoid) {
-                Log.i("FCM", "Token saved");
-            }
-        }).addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception e) {
-                Log.e("FCM", "Token not saved");
-            }
-        });
+        Utils.setToken(token);
     }
 }
