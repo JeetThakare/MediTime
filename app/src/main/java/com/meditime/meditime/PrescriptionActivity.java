@@ -104,7 +104,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Medicine newMedicine=new Medicine(document.getString("DoctorID"), document.getString("Name"), document.getString("PatientID"), document.getString("dayFreq"), document.getDate("enddt").toString(), document.getString("photourl"), document.getDate("startdt").toString(), document.getString("weekFreq"),document.getId());
+                                Medicine newMedicine=new Medicine(document.getString("DoctorID"), document.getString("Name"), document.getString("PatientID"), document.getString("dayFreq"), document.getString("enddt"), document.getString("photourl"), document.getString("startdt"), document.getString("weekFreq"),document.getId());
                                 medicineList.add(newMedicine);
                                 System.out.println("New medicine has been added to list");
 

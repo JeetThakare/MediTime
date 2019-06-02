@@ -15,7 +15,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -74,9 +73,8 @@ public class SplashActivity extends AppCompatActivity {
                             startActivity(new Intent(SplashActivity.this, DrHome.class));
                             finish();
                         } else {
-//                            startActivity(new Intent(SplashActivity.this, DrHome.class));
-//                            finish();
-                            Toast.makeText(SplashActivity.this, "Should go to student activity", Toast.LENGTH_SHORT).show();
+                            startActivity(new Intent(SplashActivity.this, PatientActivity.class));
+                            finish();
                         }
                     } else {
                         Log.d("Splash", "get failed with ", task.getException());

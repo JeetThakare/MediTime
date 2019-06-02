@@ -28,10 +28,7 @@ public class Utils {
         }
         mDocRef = FirebaseFirestore.getInstance().document("users/" + user.getEmail());
 
-        HashMap<String, String> data = new HashMap<>();
-        data.put("token", token);
-
-        mDocRef.set(token, SetOptions.merge()).addOnSuccessListener(new OnSuccessListener<Void>() {
+        mDocRef.update("token",token ).addOnSuccessListener(new OnSuccessListener<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
                 Log.i("FCM", "Token saved");
@@ -39,7 +36,7 @@ public class Utils {
         }).addOnFailureListener(new OnFailureListener() {
             @Override
             public void onFailure(@NonNull Exception e) {
-                Log.e("FCM", "Token not saved");
+                Log.e("FCM", "Token not saved "+e.toString());
             }
         });
     }
