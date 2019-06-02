@@ -14,17 +14,17 @@
         android:layout_alignParentEnd="true"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="8dp"
         android:textColor="#000000"
         android:textSize="22sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/genderLbl"
         app:layout_constraintTop_toBottomOf="@+id/patientNameTV" />
 
     <TextView
         android:id="@+id/genderLbl"
-        android:layout_width="85dp"
+        android:layout_width="100dp"
         android:layout_height="40dp"
         android:layout_below="@+id/patientNameLbl"
         android:layout_alignParentStart="true"
@@ -52,7 +52,7 @@
 
     <TextView
         android:id="@+id/ageLbl"
-        android:layout_width="80dp"
+        android:layout_width="70dp"
         android:layout_height="40dp"
         android:layout_below="@+id/patientNameLbl"
         android:layout_alignParentStart="true"
@@ -97,12 +97,30 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <ListView
+        android:id="@+id/medicinelv"
         android:layout_width="395dp"
-        android:layout_height="611dp"
+        android:layout_height="500dp"
         android:layout_marginStart="8dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="104dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/addMediBtn"
+        android:layout_width="144dp"
+        android:layout_height="41dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="132dp"
+        android:layout_marginBottom="28dp"
+        android:background="#0099FF"
+        android:text="Add Medicine"
+        android:textColor="#ffffff"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 </android.support.constraint.ConstraintLayout>

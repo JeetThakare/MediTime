@@ -53,7 +53,7 @@ public class LoginActivity extends AppCompatActivity {
                                     Log.d("LogIn", "signInWithEmail:success");
                                     System.out.println("signInWithEmail:success");
                                     FirebaseUser user = mAuth.getCurrentUser();
-                                    Toast.makeText(LoginActivity.this, user.getEmail()+"logged in successfully", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(LoginActivity.this, user.getEmail()+"logged in successfully", Toast.LENGTH_SHORT).show();
 
                                     FirebaseFirestore db = FirebaseFirestore.getInstance();
                                     DocumentReference docRef = db.collection("users").document(user.getEmail()); // user is current user here
