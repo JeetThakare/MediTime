@@ -234,7 +234,7 @@ public class SignupActivity extends AppCompatActivity {
                             for (QueryDocumentSnapshot document : task.getResult()) {
                                 System.out.println("adding doc name to list");
                                 System.out.println("ID :" + document.getId()+" Name : " + document.getString("Name")+ " Role : " + document.getString("Role")+ " Gender : " +document.getString("Gender"));
-                                User user=new User(document.getId(), document.getString("Name"), document.getString("Role"), document.getString("Gender"));
+                                User user=new User(document.getId(), document.getString("Name"), document.getString("Role"), document.getString("Gender"),document.getString("Age"));
                                 docs.add(user);
                             }
                             docsAdapter=new ArrayAdapter(SignupActivity.this,android.R.layout.simple_spinner_item, docs);

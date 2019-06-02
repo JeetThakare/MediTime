@@ -1,5 +1,6 @@
 package com.meditime.meditime;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -38,7 +39,13 @@ public class DrHome extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent= new Intent(DrHome.this,PrescriptionActivity.class);
+                intent.putExtra("name",patients.get(position).getName());
+                intent.putExtra("age",patients.get(position).getAge());
+                intent.putExtra("email",patients.get(position).getEmail());
+                intent.putExtra("gender",patients.get(position).getGender());
 
+                startActivity(intent);
             }
         });
 
@@ -59,7 +66,7 @@ public class DrHome extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                User user=new User(document.getId(), document.getString("Name"), document.getString("Role"), document.getString("Gender"));
+                                User user=new User(document.getId(), document.getString("Name"), document.getString("Role"), document.getString("Gender"), document.getString("Age"));
                                 patients.add(user);
                                 System.out.println("user added to patient list");
 

@@ -20,17 +20,5 @@
         android:layout_marginEnd="14dp"
         android:layout_marginBottom="100dp" />
 
-    <Button
-        android:id="@+id/addMediBtn"
-        android:layout_width="144dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginEnd="134dp"
-        android:layout_marginBottom="24dp"
-        android:background="#0099FF"
-        android:text="Add Medicine"
-        android:textColor="#ffffff"
-        android:textSize="18sp"
-        android:textStyle="bold" />
+
 </RelativeLayout>

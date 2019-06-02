@@ -5,12 +5,14 @@ public class User {
     private String name;
     private String role;
     private String gender;
+    private String age;
 
-    public User(String email, String name, String role, String gender) {
+    public User(String email, String name, String role, String gender, String age) {
         this.email = email;
         this.name = name;
         this.role = role;
         this.gender = gender;
+        this.age=age;
     }
 
     @Override
@@ -24,6 +26,10 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    public String getAge() {
+        return age;
     }
 
     public String getRole() {
@@ -48,5 +54,9 @@ public class User {
 
     public void setGender(String gender) {
         this.gender = gender;
+    }
+
+    public void setAge(String age) {
+        this.age = age;
     }
 }
