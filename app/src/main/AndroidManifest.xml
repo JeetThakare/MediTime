@@ -40,6 +40,7 @@
 
         <activity android:name=".PrescriptionActivity" />
         <activity android:name=".DrHome" />
+        <activity android:name=".PatientActivity" />
         <activity android:name=".medicineDetails">
 
             <!-- <intent-filter> -->
