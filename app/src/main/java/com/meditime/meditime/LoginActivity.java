@@ -1,6 +1,7 @@
 package com.meditime.meditime;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -52,10 +53,11 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
+                            setToken();
                             Log.d("LogIn", "signInWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
                             FirebaseFirestore db = FirebaseFirestore.getInstance();
-                            DocumentReference docRef = db.collection("users").document(user.getEmail()); // user is current user here
+                            DocumentReference docRef = db.collection("users").document(user.getEmail());
                             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                                 @Override
                                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -99,5 +101,10 @@ public class LoginActivity extends AppCompatActivity {
             return false;
         }
         return true;
+    }
+
+    private void setToken(){
+        SharedPreferences pref = getSharedPreferences("MediPrefs", MODE_PRIVATE);
+        Utils.setToken(pref.getString("token", null));
     }
 }

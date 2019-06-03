@@ -179,7 +179,8 @@ public class medicineDetails extends AppCompatActivity {
                 @Override
                 public void onSuccess(Void aVoid) {
                     Toast.makeText(medicineDetails.this, "Medicine details Updated!", Toast.LENGTH_SHORT).show();
-                    //sendNotification(medicineId);
+                    sendNotification(medicineId);
+                    startActivity(new Intent(medicineDetails.this, PrescriptionActivity.class).putExtra("email", patientEmail));
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override

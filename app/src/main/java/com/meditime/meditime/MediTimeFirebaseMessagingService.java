@@ -2,6 +2,7 @@ package com.meditime.meditime;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.IBinder;
 import android.support.annotation.NonNull;
 import android.util.Log;
@@ -44,6 +45,10 @@ public class MediTimeFirebaseMessagingService extends FirebaseMessagingService {
     public void onNewToken(String token) {
         Log.d("FCM", "Refreshed token: " + token);
         super.onNewToken(token);
+        SharedPreferences pref = getSharedPreferences("MediPrefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("token", token);
+        editor.apply();
         Utils.setToken(token);
     }
 }

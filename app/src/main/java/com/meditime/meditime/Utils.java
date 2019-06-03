@@ -1,5 +1,6 @@
 package com.meditime.meditime;
 
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
@@ -12,6 +13,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.SetOptions;
 
 import java.util.HashMap;
+
+import static android.content.Context.MODE_PRIVATE;
 
 public class Utils {
     private static FirebaseAuth mAuth;

@@ -26,6 +26,7 @@ public class DrHome extends AppCompatActivity {
     private FirebaseAuth auth;
     private ArrayAdapter adapter;
     ArrayList<User> patients = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,23 +34,21 @@ public class DrHome extends AppCompatActivity {
         setTitle("My Patients");
         auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
-        listView=(ListView)findViewById(R.id.listview);
+        listView = findViewById(R.id.listview);
         getPaitents(user);
         setTitle("Doctor Home");
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent= new Intent(DrHome.this,PrescriptionActivity.class);
-                intent.putExtra("name",patients.get(position).getName());
-                intent.putExtra("age",patients.get(position).getAge());
-                intent.putExtra("email",patients.get(position).getEmail());
-                intent.putExtra("gender",patients.get(position).getGender());
+                Intent intent = new Intent(DrHome.this, PrescriptionActivity.class);
+                intent.putExtra("name", patients.get(position).getName());
+                intent.putExtra("age", patients.get(position).getAge());
+                intent.putExtra("email", patients.get(position).getEmail());
+                intent.putExtra("gender", patients.get(position).getGender());
 
                 startActivity(intent);
             }
         });
-
-
 
 
     }
@@ -59,26 +58,25 @@ public class DrHome extends AppCompatActivity {
 
         db.collection("users")
                 .whereEqualTo("Role", "Patient")
-                .whereEqualTo("Doctor",user.getEmail())
+                .whereEqualTo("Doctor", user.getEmail())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                User user=new User(document.getId(), document.getString("Name"), document.getString("Role"), document.getString("Gender"), document.getString("Age"));
+                                User user = new User(document.getId(), document.getString("Name"), document.getString("Role"), document.getString("Gender"), document.getString("Age"));
                                 patients.add(user);
                                 System.out.println("user added to patient list");
 
                                 //Log.d("DB", document.getId() + " => " + document.getData());
                             }
-                            adapter=new ArrayAdapter(DrHome.this,android.R.layout.simple_list_item_1, patients);
+                            adapter = new ArrayAdapter(DrHome.this, android.R.layout.simple_list_item_1, patients);
                             listView.setAdapter(adapter);
                         } else {
                             Log.d("DB", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-        return;
     }
 }
