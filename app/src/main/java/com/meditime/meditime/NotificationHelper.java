@@ -13,8 +13,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.messaging.FirebaseMessaging;
-
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,7 +23,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Random;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -34,7 +31,7 @@ public class NotificationHelper {
 
     private static DocumentReference mDocRef;
 
-    public void displayNotification(Context context, String title, String body, String command, String email) {
+    public void displayNotification(Context context, String title, String body) {
 
         Intent intent = new Intent(context, PrescriptionActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -53,11 +50,7 @@ public class NotificationHelper {
         notificationManager.notify(0, mBuilder.build());
     }
 
-    public void sendNotification(String email, final String title, final String body, String medicineId, final String command) {
-        final String SENDER_ID = Constants.SENDER_ID;
-        Random random = new Random();
-        int messageId = random.nextInt();
-        FirebaseMessaging fm = FirebaseMessaging.getInstance();
+    public void sendNotification(String email, final String title, final String body, final String medicineId, final String command) {
 
         mDocRef = FirebaseFirestore.getInstance().document("users/" + email);
 
@@ -69,7 +62,7 @@ public class NotificationHelper {
                     if (document.exists()) {
                         Log.d("NOTIF", "DocumentSnapshot data: " + document.getData());
                         String token = document.getString("token");
-                        callFcm(token, title, body, command);
+                        callFcm(token, title, body, command, medicineId);
                     } else {
                         Log.d("NOTIF", "No such document");
                     }
@@ -80,7 +73,7 @@ public class NotificationHelper {
         });
     }
 
-    private void callFcm(String token, String title, String body, String command) {
+    private void callFcm(String token, String title, String body, String command, String medicineId) {
         try {
             URL url = new URL("https://fcm.googleapis.com/fcm/send");
             HttpsURLConnection conn = (HttpsURLConnection) url.openConnection();
@@ -97,6 +90,7 @@ public class NotificationHelper {
             info.put("title", title); // Notification title
             info.put("body", body); // Notification body
             data.put("command", command);
+            data.put("medicineId", medicineId);
 
             OutputStreamWriter wr = new OutputStreamWriter(conn.getOutputStream());
             wr.write(data.toString());

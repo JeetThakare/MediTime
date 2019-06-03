@@ -30,8 +30,8 @@ public class MediTimeFirebaseMessagingService extends FirebaseMessagingService {
 
             String title = remoteMessage.getNotification().getTitle();
             String body = remoteMessage.getNotification().getBody();
-
-            NotificationHelper.displayNotification(this, title, body, "", "");
+            NotificationHelper notifHelp = new NotificationHelper();
+            notifHelp.displayNotification(this, title, body);
         }
 
         // Check if message contains a notification payload.

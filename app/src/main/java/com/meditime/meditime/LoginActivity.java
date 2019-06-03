@@ -37,71 +37,68 @@ public class LoginActivity extends AppCompatActivity {
 
         username = findViewById(R.id.usernameTV);
         pass = findViewById(R.id.passwordTV);
-
         loginBtn = findViewById(R.id.loginButton);
 
         mAuth = FirebaseAuth.getInstance();
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mAuth.signInWithEmailAndPassword(username.getText().toString(), pass.getText().toString())
-                        .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    Log.d("LogIn", "signInWithEmail:success");
-                                    System.out.println("signInWithEmail:success");
-                                    FirebaseUser user = mAuth.getCurrentUser();
-                                    Utils.setToken(FirebaseInstanceId.getInstance().getToken());
-                                    Toast.makeText(LoginActivity.this, user.getEmail() + "logged in successfully", Toast.LENGTH_SHORT).show();
+    }
 
-                                    FirebaseFirestore db = FirebaseFirestore.getInstance();
-                                    DocumentReference docRef = db.collection("users").document(user.getEmail()); // user is current user here
-                                    docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                                        @Override
-                                        public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                            if (task.isSuccessful()) {
-                                                DocumentSnapshot document = task.getResult();
-                                                if (document.exists()) {
-//                                                    Log.d(TAG, "DocumentSnapshot data: " + document.getString("Role"));
-                                                    role = document.getString("Role");
-                                                    System.out.println("role:" + role);
-                                                    if (role.equals("Doctor")) {
-                                                        startActivity(new Intent(LoginActivity.this, DrHome.class));
-                                                    }
-//                                                    else{
-//                                                        startActivity(new Intent(LoginActivity.this, PatientHome.class))
-//                                                    }
-                                                } else {
-                                                    Log.d("Login role check", "No such document");
-                                                }
+
+    public void login(View view) {
+        if (!isValidate()) {
+            return;
+        }
+        mAuth.signInWithEmailAndPassword(username.getText().toString(), pass.getText().toString())
+                .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("LogIn", "signInWithEmail:success");
+                            FirebaseUser user = mAuth.getCurrentUser();
+                            FirebaseFirestore db = FirebaseFirestore.getInstance();
+                            DocumentReference docRef = db.collection("users").document(user.getEmail()); // user is current user here
+                            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        DocumentSnapshot document = task.getResult();
+                                        if (document.exists()) {
+                                            role = document.getString("Role");
+                                            System.out.println("role:" + role);
+                                            if (role.equals("Doctor")) {
+                                                startActivity(new Intent(LoginActivity.this, DrHome.class));
                                             } else {
-                                                Log.d("Login role check", "get failed with ", task.getException());
+                                                startActivity(new Intent(LoginActivity.this, PatientActivity.class));
                                             }
-
+                                        } else {
+                                            Log.d("Login role check", "No such document");
                                         }
-                                    });
-
-
-                                    // Open relevant activity
-                                    // Code here ...
-                                    // startActivity(new Intent(LoginActivity.this, SplashActivity.class));
-
-                                    // Open relevant activity
-                                    finish();
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w("LogIn", "signInWithEmail:failure", task.getException());
-                                    Toast.makeText(LoginActivity.this, "Authentication failed." + task.getException().toString(),
-                                            Toast.LENGTH_SHORT).show();
-
+                                    } else {
+                                        Log.d("Login role check", "get failed with ", task.getException());
+                                    }
                                 }
-                            }
-                        });
-            }
-        });
+                            });
+                            finish();
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w("LogIn", "signInWithEmail:failure", task.getException());
+                            Toast.makeText(LoginActivity.this, "Authentication failed." + task.getException().toString(),
+                                    Toast.LENGTH_SHORT).show();
 
+                        }
+                    }
+                });
+    }
+
+    private boolean isValidate() {
+        if (username.getText().toString().isEmpty()) {
+            username.setError("Username is required");
+            return false;
+        }
+        if (pass.getText().toString().isEmpty()) {
+            pass.setError("Password is required");
+            return false;
+        }
+        return true;
     }
 }
