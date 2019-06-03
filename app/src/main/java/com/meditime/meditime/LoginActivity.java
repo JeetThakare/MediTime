@@ -43,7 +43,6 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
-
     public void login(View view) {
         if (!isValidate()) {
             return;
