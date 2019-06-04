@@ -1,9 +1,12 @@
 package com.meditime.meditime;
 
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -14,7 +17,14 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.HashMap;
 
 public class PatientActivity extends AppCompatActivity {
 
@@ -33,10 +43,33 @@ public class PatientActivity extends AppCompatActivity {
         final FirebaseUser user = mAuth.getCurrentUser();
 
         getMedicine(user);
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(PatientActivity.this, medicineDetails.class);
+                intent.putExtra("name", medicineList.get(position).getName());
+                intent.putExtra("schedule", medicineList.get(position).getDayFreq());
+                intent.putExtra("weekfreq", medicineList.get(position).getWeekFreq());
+                intent.putExtra("startdt", medicineList.get(position).getStartDate());
+                intent.putExtra("enddt", medicineList.get(position).getEndDate());
+                intent.putExtra("photourl", medicineList.get(position).getPhotoUrl());
+                intent.putExtra("medicineID", medicineList.get(position).getMedicineID());
+                intent.putExtra("role", "Patient");
+                startActivity(intent);
+            }
+        });
     }
 
     private  void getMedicine(FirebaseUser user){
         FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        final Date currentDate = Calendar.getInstance().getTime();
+        Calendar cal = Calendar.getInstance();
+        final int dayofweek = cal.get(Calendar.DAY_OF_WEEK)-2;
+        final SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        String formattedcurrentDate = df.format(currentDate);
+        ArrayList<Medicine> todayMedicine=new ArrayList<>();
 
         db.collection("medicines")
                 .whereEqualTo("PatientID",user.getEmail())
@@ -46,18 +79,38 @@ public class PatientActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
                             for (QueryDocumentSnapshot document : task.getResult()) {
-                                Medicine newMedicine = new Medicine(document.getString("DoctorID"),
-                                        document.getString("Name"),
-                                        document.getString("PatientID"),
-                                        document.getString("dayFreq"),
-                                        document.getString("enddt"),
-                                        document.getString("photourl"),
-                                        document.getString("startdt"),
-                                        document.getString("weekFreq"),
-                                        document.getId());
-                                medicineList.add(newMedicine);
-                                System.out.println("New medicine has been added to list"+document.getString("name"));
+                                Log.i("AlramService", "Query sucess doc");
+                                char[] weekfreq = document.getString("weekFreq").toCharArray();
+                                int dayfreq = Integer.parseInt(document.getString("dayFreq"));
+
+                                try{
+                                    Date sdate = df.parse(document.getString("startdt"));
+                                    Date edate = df.parse(document.getString("enddt"));
+                                    if (currentDate.after(sdate) && currentDate.before(edate) && weekfreq[dayofweek] == '1' ) {
+                                        System.out.println("between st date and end date ");
+                                        Medicine newMedicine = new Medicine(document.getString("DoctorID"),
+                                                document.getString("Name"),
+                                                document.getString("PatientID"),
+                                                document.getString("dayFreq"),
+                                                document.getString("enddt"),
+                                                document.getString("photourl"),
+                                                document.getString("startdt"),
+                                                document.getString("weekFreq"),
+                                                document.getId());
+                                        medicineList.add(newMedicine);
+
+                                    }
+                                }catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
                             }
+                            Collections.sort(medicineList, new Comparator<Medicine>() {
+                                @Override
+                                public int compare(Medicine m1, Medicine m2) {
+                                    return m2.getDayFreq().compareTo(m1.getDayFreq());
+                                }
+                            });
+
                             MedicineListAdapter adaptor = new MedicineListAdapter(PatientActivity.this,R.layout.custom_medicine_list,medicineList);
                             lv.setAdapter(adaptor);
                         }else{
@@ -66,5 +119,4 @@ public class PatientActivity extends AppCompatActivity {
                     }
                 });
     }
-
 }
