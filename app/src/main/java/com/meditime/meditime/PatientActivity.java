@@ -55,7 +55,7 @@ public class PatientActivity extends AppCompatActivity {
                 intent.putExtra("photourl", medicineList.get(position).getPhotoUrl());
                 intent.putExtra("medicineID", medicineList.get(position).getMedicineID());
                 intent.putExtra("role", "Patient");
-                intent.putExtra("action", "PatientAdd");
+                intent.putExtra("action", "PatientUpdate");
                 intent.putExtra("email", user.getEmail());
                 startActivity(intent);
             }
