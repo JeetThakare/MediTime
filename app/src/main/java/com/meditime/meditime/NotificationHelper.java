@@ -31,16 +31,22 @@ public class NotificationHelper {
 
     private static DocumentReference mDocRef;
 
-    public void displayNotification(Context context, String title, String body) {
+    public void displayNotification(Context context, String title, String body, String bigText) {
 
-        Intent intent = new Intent(context, PrescriptionActivity.class);
+        Log.i("AlramService", "Inside notif");
+
+        Intent intent = new Intent(context, EntryActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
 
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(context, Constants.CHANNEL_ID)
                 .setContentTitle(title)
                 .setContentText(body)
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(bigText))
+                .setSmallIcon(R.drawable.heart_16)
+                .setVibrate(new long[]{1000, 1000})
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
