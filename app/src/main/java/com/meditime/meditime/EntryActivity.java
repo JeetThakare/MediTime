@@ -1,6 +1,11 @@
 package com.meditime.meditime;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.app.ActionBar;
@@ -18,6 +23,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.util.Calendar;
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -44,6 +51,10 @@ public class EntryActivity extends AppCompatActivity {
     String role = "";
     private FirebaseAuth auth;
     private DocumentReference mDocRef;
+
+    private AlarmManager alarmMgr;
+    private PendingIntent alarmIntent;
+
     private final Handler mHideHandler = new Handler();
     private View mContentView;
     private final Runnable mHidePart2Runnable = new Runnable() {
@@ -101,6 +112,11 @@ public class EntryActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        createNotificationChannel();
+        alramSetMorning();
+        alramSetAfternoon();
+        alramSetEvening();
+
         setContentView(R.layout.activity_entry);
 
         mVisible = true;
@@ -142,25 +158,6 @@ public class EntryActivity extends AppCompatActivity {
         }
     }
 
-    /*
-        @Override
-        protected void onPostCreate(Bundle savedInstanceState) {
-            super.onPostCreate(savedInstanceState);
-
-            // Trigger the initial hide() shortly after the activity has been
-            // created, to briefly hint to the user that UI controls
-            // are available.
-            delayedHide(100);
-        }
-
-        private void toggle() {
-            if (mVisible) {
-                hide();
-            } else {
-                show();
-            }
-        }
-    */
     private void hide() {
         // Hide UI first
         ActionBar actionBar = getSupportActionBar();
@@ -185,5 +182,56 @@ public class EntryActivity extends AppCompatActivity {
         // Schedule a runnable to display UI elements after a delay
         mHideHandler.removeCallbacks(mHidePart2Runnable);
         mHideHandler.postDelayed(mShowPart2Runnable, UI_ANIMATION_DELAY);
+    }
+
+    private void alramSetMorning(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 8);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        Intent intent1 = new Intent(EntryActivity.this, Alarm.class);
+        intent1.putExtra("time","0");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(EntryActivity.this, 0,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) EntryActivity.this.getSystemService(ALARM_SERVICE);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+    }
+
+    private void alramSetAfternoon(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 12);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+
+        Intent intent1 = new Intent(EntryActivity.this, Alarm.class);
+        intent1.putExtra("time","1");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(EntryActivity.this, 2,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) EntryActivity.this.getSystemService(ALARM_SERVICE);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+    }
+
+    private void alramSetEvening(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, 21);
+        calendar.set(Calendar.MINUTE, 29);
+        calendar.set(Calendar.SECOND, 0);
+
+        Intent intent1 = new Intent(EntryActivity.this, Alarm.class);
+        intent1.putExtra("time","2");
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(EntryActivity.this, 3,intent1, PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager am = (AlarmManager) EntryActivity.this.getSystemService(ALARM_SERVICE);
+        am.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
+    }
+
+    private void createNotificationChannel() {
+        String name = Constants.CHANNEL_NAME;
+        String description = Constants.CHANNEL_DESC;
+        int importance = NotificationManager.IMPORTANCE_DEFAULT;
+        NotificationChannel channel = new NotificationChannel(Constants.CHANNEL_ID, name, importance);
+        channel.setDescription(description);
+        // Register the channel with the system; you can't change the importance
+        // or other notification behaviors after this
+        NotificationManager notificationManager = this.getSystemService(NotificationManager.class);
+        notificationManager.createNotificationChannel(channel);
     }
 }

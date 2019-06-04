@@ -40,8 +40,6 @@ public class SplashActivity extends AppCompatActivity {
         Typeface type = Typeface.createFromAsset(getAssets(), "ComicSansMS3.ttf");
         appName.setTypeface(type);
 
-        createNotificationChannel();
-
 
         progressBar.setVisibility(View.GONE);
         login.setVisibility(View.VISIBLE);
@@ -63,16 +61,4 @@ public class SplashActivity extends AppCompatActivity {
         });
     }
 
-
-    private void createNotificationChannel() {
-        String name = Constants.CHANNEL_NAME;
-        String description = Constants.CHANNEL_DESC;
-        int importance = NotificationManager.IMPORTANCE_DEFAULT;
-        NotificationChannel channel = new NotificationChannel(Constants.CHANNEL_ID, name, importance);
-        channel.setDescription(description);
-        // Register the channel with the system; you can't change the importance
-        // or other notification behaviors after this
-        NotificationManager notificationManager = this.getSystemService(NotificationManager.class);
-        notificationManager.createNotificationChannel(channel);
-    }
 }
