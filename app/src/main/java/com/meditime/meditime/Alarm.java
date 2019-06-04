@@ -23,14 +23,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Objects;
 
-import static android.content.Context.VIBRATOR_SERVICE;
 
 public class Alarm extends BroadcastReceiver {
-    String time = "";
     String body = "";
     private FirebaseAuth auth;
-    private DocumentReference mDocRef;
-    ArrayList<Medicine> meds = new ArrayList<>();
 
     @Override
     public void onReceive(final Context context, Intent intent) {
@@ -51,7 +47,7 @@ public class Alarm extends BroadcastReceiver {
         final int dayOfWeek;
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(now);
-        dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK)-1;
+        dayOfWeek = calendar.get(Calendar.DAY_OF_WEEK) - 1;
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
@@ -82,7 +78,7 @@ public class Alarm extends BroadcastReceiver {
                                 }
                             }
                             if (!body.isEmpty()) {
-                                notif.displayNotification(context, "Time for your medicine", "", "Please take the below medicines " + body);
+                                notif.displayNotification(context, "Time for your medicine", "", "Please take the below medicines " + body, "reminder");
                             }
                         } else {
                             Log.d("DB", "Error getting documents: ", task.getException());

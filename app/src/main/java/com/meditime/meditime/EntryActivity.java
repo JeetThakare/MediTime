@@ -212,8 +212,8 @@ public class EntryActivity extends AppCompatActivity {
 
     private void alramSetEvening(){
         Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, 21);
-        calendar.set(Calendar.MINUTE, 29);
+        calendar.set(Calendar.HOUR_OF_DAY, 20);
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 
         Intent intent1 = new Intent(EntryActivity.this, Alarm.class);
