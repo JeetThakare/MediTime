@@ -28,7 +28,7 @@ public class PrescriptionActivity extends AppCompatActivity {
     private String name;
     private String age;
     private String gender;
-    private String email;
+    private String patientemail;
     private FirebaseAuth mAuth;
     TextView nameTV, ageTV, genderTV;
     ListView medicineLV;
@@ -42,14 +42,14 @@ public class PrescriptionActivity extends AppCompatActivity {
         setContentView(R.layout.activity_prescription);
         setTitle("Prescription");
         Intent intent = getIntent();
-        email = intent.getStringExtra("email");
+        patientemail = intent.getStringExtra("email");
         name = intent.getStringExtra("name");
         gender = intent.getStringExtra("gender");
         age = intent.getStringExtra("age");
 
-        if (email != null || !email.isEmpty()) {
+        if (patientemail != null || !patientemail.isEmpty()) {
             FirebaseFirestore db = FirebaseFirestore.getInstance();
-            DocumentReference docRef = db.collection("users").document(email);
+            DocumentReference docRef = db.collection("users").document(patientemail);
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -85,8 +85,9 @@ public class PrescriptionActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(PrescriptionActivity.this, medicineDetails.class);
-                intent.putExtra("email", email);
+                intent.putExtra("email", patientemail);
                 intent.putExtra("role", "Doctor");
+                intent.putExtra("action", "DoctorAdd");
                 startActivity(intent);
             }
         });
@@ -105,6 +106,8 @@ public class PrescriptionActivity extends AppCompatActivity {
                 intent1.putExtra("photourl", medicineList.get(position).getPhotoUrl());
                 intent1.putExtra("medicineID", medicineList.get(position).getMedicineID());
                 intent1.putExtra("role", "Doctor");
+                intent1.putExtra("email", patientemail);
+                intent1.putExtra("action", "DoctorUpdate");
                 startActivity(intent1);
             }
         });
@@ -115,7 +118,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("medicines")
-                .whereEqualTo("PatientID", email)
+                .whereEqualTo("PatientID", patientemail)
                 .whereEqualTo("DoctorID", user.getEmail())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

@@ -24,7 +24,6 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 
 public class PatientActivity extends AppCompatActivity {
 
@@ -56,6 +55,8 @@ public class PatientActivity extends AppCompatActivity {
                 intent.putExtra("photourl", medicineList.get(position).getPhotoUrl());
                 intent.putExtra("medicineID", medicineList.get(position).getMedicineID());
                 intent.putExtra("role", "Patient");
+                intent.putExtra("action", "PatientAdd");
+                intent.putExtra("email", user.getEmail());
                 startActivity(intent);
             }
         });
