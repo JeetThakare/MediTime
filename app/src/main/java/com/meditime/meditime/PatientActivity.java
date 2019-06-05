@@ -48,7 +48,7 @@ public class PatientActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
 
-        getMedicine(user);
+        //getMedicine(user);
 
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -85,6 +85,12 @@ public class PatientActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        getMedicine(mAuth.getCurrentUser());
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.logoutMenuId){
             Toast.makeText(this,"You are logged out",Toast.LENGTH_SHORT).show();
@@ -96,6 +102,10 @@ public class PatientActivity extends AppCompatActivity {
     }
 
     private  void getMedicine(FirebaseUser user){
+        if(user == null){
+            return;
+        }
+        medicineList.clear();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         final Date currentDate = Calendar.getInstance().getTime();
