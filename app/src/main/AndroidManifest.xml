@@ -23,7 +23,6 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".MyPrescriptionActivity"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -76,6 +75,9 @@
 
         <activity
             android:name=".PrescriptionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MyPrescriptionActivity"
             android:screenOrientation="portrait" />
         <activity
             android:name=".DrHome"
