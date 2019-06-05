@@ -71,6 +71,7 @@ public class PatientActivity extends AppCompatActivity {
         viewMediBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                startActivity(new Intent(PatientActivity.this, MyPrescriptionActivity.class));
             }
         });
     }

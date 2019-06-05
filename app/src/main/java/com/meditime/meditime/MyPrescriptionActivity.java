@@ -24,79 +24,46 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
-public class PrescriptionActivity extends AppCompatActivity {
+public class MyPrescriptionActivity extends AppCompatActivity {
     private String name;
     private String age;
     private String gender;
-    private String patientemail;
     private FirebaseAuth mAuth;
     TextView nameTV, ageTV, genderTV;
     ListView medicineLV;
     ArrayAdapter adapter;
-    Button addmMdicines;
     ArrayList<Medicine> medicineList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_prescription);
-        setTitle("Prescription");
-        Intent intent = getIntent();
-        patientemail = intent.getStringExtra("email");
-        name = intent.getStringExtra("name");
-        gender = intent.getStringExtra("gender");
-        age = intent.getStringExtra("age");
+        setContentView(R.layout.activity_my_prescription);
 
-        if (patientemail != null || !patientemail.isEmpty()) {
-            FirebaseFirestore db = FirebaseFirestore.getInstance();
-            DocumentReference docRef = db.collection("users").document(patientemail);
-            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                    if (task.isSuccessful()) {
-                        DocumentSnapshot document = task.getResult();
-                        if (document.exists()) {
-                            name = document.getString("Name");
-                            age = document.getString("Age");
-                            gender = document.getString("Gender");
-                            nameTV.setText(name);
-                            ageTV.setText(age);
-                            genderTV.setText(gender);
-                        } else {
-                            Log.d("Login role check", "No such document");
-                        }
-                    } else {
-                        Log.d("Login role check", "get failed with ", task.getException());
-                    }
-                }
-            });
-        }
-        mAuth = FirebaseAuth.getInstance();
-        final FirebaseUser user = mAuth.getCurrentUser();
+        setTitle("My Prescription");
 
         nameTV = findViewById(R.id.patientNameTV);
         ageTV = findViewById(R.id.ageTV);
         genderTV = findViewById(R.id.genderTV);
         medicineLV = findViewById(R.id.medicinelv);
 
-        addmMdicines = findViewById(R.id.addMediBtn);
-        addmMdicines.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(PrescriptionActivity.this, medicineDetails.class);
-                intent.putExtra("email", patientemail);
-                intent.putExtra("role", "Doctor");
-                intent.putExtra("action", "DoctorAdd");
-                startActivity(intent);
-            }
-        });
+
+        mAuth = FirebaseAuth.getInstance();
+        final FirebaseUser user = mAuth.getCurrentUser();
+        if (user == null) {
+            startActivity(new Intent(MyPrescriptionActivity.this, SplashActivity.class));
+            finish();
+        }
+
+        FirebaseFirestore db = FirebaseFirestore.getInstance();
+
+        medicineLV = findViewById(R.id.medicinelv);
 
         showMedicines(user);
 
         medicineLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent1 = new Intent(PrescriptionActivity.this, medicineDetails.class);
+                Intent intent1 = new Intent(MyPrescriptionActivity.this, medicineDetails.class);
                 intent1.putExtra("name", medicineList.get(position).getName());
                 intent1.putExtra("schedule", medicineList.get(position).getDayFreq());
                 intent1.putExtra("weekfreq", medicineList.get(position).getWeekFreq());
@@ -105,8 +72,8 @@ public class PrescriptionActivity extends AppCompatActivity {
                 intent1.putExtra("photourl", medicineList.get(position).getPhotoUrl());
                 intent1.putExtra("medicineID", medicineList.get(position).getMedicineID());
                 intent1.putExtra("role", "Doctor");
-                intent1.putExtra("email", patientemail);
-                intent1.putExtra("action", "DoctorUpdate");
+                intent1.putExtra("email", user.getEmail());
+                intent1.putExtra("action", "PatientUpdate");
                 startActivity(intent1);
             }
         });
@@ -125,8 +92,7 @@ public class PrescriptionActivity extends AppCompatActivity {
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("medicines")
-                .whereEqualTo("PatientID", patientemail)
-                .whereEqualTo("DoctorID", user.getEmail())
+                .whereEqualTo("PatientID", user.getEmail())
                 .get()
                 .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                     @Override
@@ -139,14 +105,12 @@ public class PrescriptionActivity extends AppCompatActivity {
 
                                 //Log.d("DB", document.getId() + " => " + document.getData());
                             }
-                            adapter = new ArrayAdapter(PrescriptionActivity.this, android.R.layout.simple_list_item_1, medicineList);
+                            adapter = new ArrayAdapter(MyPrescriptionActivity.this, android.R.layout.simple_list_item_1, medicineList);
                             medicineLV.setAdapter(adapter);
                         } else {
                             Log.d("DB", "Error getting documents: ", task.getException());
                         }
                     }
                 });
-        return;
     }
-
 }
