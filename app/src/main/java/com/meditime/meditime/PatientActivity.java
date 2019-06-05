@@ -10,6 +10,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -32,6 +33,7 @@ import java.util.Date;
 public class PatientActivity extends AppCompatActivity {
 
     ListView lv;
+    Button viewMediBtn;
     private FirebaseAuth mAuth;
     ArrayList<Medicine> medicineList=new ArrayList<>();
 
@@ -42,6 +44,7 @@ public class PatientActivity extends AppCompatActivity {
         setTitle("Medicine Schedule");
 
         lv = (ListView) findViewById(R.id.listview2);
+        viewMediBtn=findViewById(R.id.viewMediButton);
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
 
@@ -62,6 +65,12 @@ public class PatientActivity extends AppCompatActivity {
                 intent.putExtra("action", "PatientUpdate");
                 intent.putExtra("email", user.getEmail());
                 startActivity(intent);
+            }
+        });
+
+        viewMediBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
             }
         });
     }
