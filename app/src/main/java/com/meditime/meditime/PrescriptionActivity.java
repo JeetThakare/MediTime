@@ -88,6 +88,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                 intent.putExtra("role", "Doctor");
                 intent.putExtra("action", "DoctorAdd");
                 startActivity(intent);
+                finish();
             }
         });
 
@@ -108,8 +109,17 @@ public class PrescriptionActivity extends AppCompatActivity {
                 intent1.putExtra("email", patientemail);
                 intent1.putExtra("action", "DoctorUpdate");
                 startActivity(intent1);
+                finish();
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mAuth = FirebaseAuth.getInstance();
+        final FirebaseUser user = mAuth.getCurrentUser();
+        showMedicines(user);
     }
 
     public void showMedicines(FirebaseUser user) {
