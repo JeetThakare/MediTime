@@ -1,62 +1,48 @@
 package com.meditime.meditime;
 
-import android.Manifest;
 import android.app.DatePickerDialog;
-import android.content.ContentResolver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
+
 import android.icu.util.Calendar;
 
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v4.content.FileProvider;
-
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-
 import android.util.Log;
-
 import android.text.InputType;
-import android.util.Log;
-
 import android.view.View;
-import android.webkit.MimeTypeMap;
+
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.google.android.gms.common.internal.service.Common;
+
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
 import java.text.ParseException;
@@ -78,8 +64,6 @@ public class medicineDetails extends AppCompatActivity {
     private Calendar calendar1;
     private Calendar calendar2;
     private DatePickerDialog datePickerDialog;
-    private Uri photouri;
-    private Uri uploadedUrl;
     private Bitmap image;
     private StorageReference mstorageReference;
     private FirebaseStorage storage;
@@ -108,14 +92,16 @@ public class medicineDetails extends AppCompatActivity {
 
         calendar1 = Calendar.getInstance();
         calendar2 = Calendar.getInstance();
-
+        startDate.setInputType(InputType.TYPE_NULL);
+        endDate.setInputType(InputType.TYPE_NULL);
         auth = FirebaseAuth.getInstance();
+
 
         FirebaseUser user = auth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
         mstorageReference = storage.getReference();
 
-        user = auth.getCurrentUser();
+
         if (user == null) {
             startActivity(new Intent(this, SplashActivity.class));
         }
@@ -128,12 +114,9 @@ public class medicineDetails extends AppCompatActivity {
 
         if (action.contains("Update")) {
             medicineId = intent.getStringExtra("medicineID");
-            startDate.setInputType(InputType.TYPE_NULL);
             endDate = findViewById(R.id.endDateET);
-            endDate.setInputType(InputType.TYPE_NULL);
 
             DocumentReference docRef = db.collection("medicines").document(medicineId);
-
 
             docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                 @Override
@@ -163,15 +146,6 @@ public class medicineDetails extends AppCompatActivity {
                     }
                 }
             });
-            /*
-            name.setText(intent.getStringExtra("name"));
-            schedule.setText(intent.getStringExtra("schedule"));
-            frequency.setText(intent.getStringExtra("weekfreq"));
-            startDate.setText(intent.getStringExtra("startdt"));
-            endDate.setText(intent.getStringExtra("enddt"));
-            photoUrl = intent.getStringExtra("photourl");
-            //medicineImage.setImageURI(Uri.parse(photoUrl));
-            */
         }
 
 
@@ -246,12 +220,13 @@ public class medicineDetails extends AppCompatActivity {
 
     }
 
+
     private Bitmap GetImageBitmapFromUrl(String url) throws IOException {
         Bitmap imageBitmap = null;
         URL imgUrl = new URL(url);
         try {
             imageBitmap = BitmapFactory.decodeStream(imgUrl.openConnection().getInputStream());
-        }catch (Exception e){
+        } catch (Exception e) {
 
         }
         return imageBitmap;
@@ -266,7 +241,8 @@ public class medicineDetails extends AppCompatActivity {
 //        if (!(currentImageName.equals("medicine"))) {
 //            uploadPhoto();
 //        }
-
+        auth = FirebaseAuth.getInstance();
+        user = auth.getCurrentUser();
         if (action.contains("Update")) {
             mDocRef = FirebaseFirestore.getInstance().document("medicines/" + medicineId);
             mDocRef.update(
