@@ -58,7 +58,7 @@ public class MyPrescriptionActivity extends AppCompatActivity {
 
         medicineLV = findViewById(R.id.medicinelv);
 
-        showMedicines(user);
+        //showMedicines(user);
 
         medicineLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -88,7 +88,10 @@ public class MyPrescriptionActivity extends AppCompatActivity {
     }
 
     public void showMedicines(FirebaseUser user) {
-
+        if(user == null){
+            return;
+        }
+        medicineList.clear();
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("medicines")
