@@ -37,6 +37,7 @@ import com.google.firebase.storage.UploadTask;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.squareup.picasso.Picasso;
 
 
 import java.io.ByteArrayOutputStream;
@@ -128,11 +129,12 @@ public class medicineDetails extends AppCompatActivity {
                             schedule.setText(document.getString("dayFreq"));
                             endDate.setText(document.getString("enddt"));
                             if (document.getString("photoUrl") != null && !document.getString("photoUrl").isEmpty()) {
-                                try {
-                                    medicineImage.setImageBitmap(GetImageBitmapFromUrl(document.getString("photoUrl")));
-                                } catch (IOException e) {
-                                    e.printStackTrace();
-                                }
+
+                                    Picasso.with(medicineDetails.this).load(document.getString("photoUrl")).into(medicineImage);
+//                                    medicineImage.setImageBitmap(GetImageBitmapFromUrl(document.getString("photoUrl")));
+//                                } catch (IOException e) {
+//                                    e.printStackTrace();
+//                                }
                                 //medicineImage.setImageURI(null);
                                 //medicineImage.setImageURI(Uri.parse(document.getString("photoUrl")));
                             }
@@ -252,11 +254,11 @@ public class medicineDetails extends AppCompatActivity {
                     Toast.makeText(medicineDetails.this, "Medicine details Updated!", Toast.LENGTH_SHORT).show();
                     sendNotification(medicineId);
                     if (action.contains("Patient")) {
-                        startActivity(new Intent(medicineDetails.this, PatientActivity.class));
+                        //startActivity(new Intent(medicineDetails.this, PatientActivity.class));
                         finish();
                     } else {
                         Log.i("Pranay", "Patient email " + patientEmail);
-                        startActivity(new Intent(medicineDetails.this, PrescriptionActivity.class).putExtra("email", patientEmail));
+                        //startActivity(new Intent(medicineDetails.this, PrescriptionActivity.class).putExtra("email", patientEmail));
                         finish();
                     }
                 }
@@ -283,7 +285,7 @@ public class medicineDetails extends AppCompatActivity {
                 public void onSuccess(Void aVoid) {
                     Toast.makeText(medicineDetails.this, "Medicine details added!", Toast.LENGTH_SHORT).show();
                     sendNotification(medicineId);
-                    startActivity(new Intent(medicineDetails.this, PrescriptionActivity.class).putExtra("email", patientEmail));
+                    //startActivity(new Intent(medicineDetails.this, PrescriptionActivity.class).putExtra("email", patientEmail));
                     finish();
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -311,6 +313,15 @@ public class medicineDetails extends AppCompatActivity {
         }
 
     }
+
+//    new code added
+//    @Override
+//    public void onBackPressed() {
+//        super.onBackPressed();
+//        startActivity(new Intent(medicineDetails.this, PrescriptionActivity.class).putExtra("email", patientEmail));
+//        finish();
+//
+//    }
 
     private boolean validate() {
         if (name.getText().toString().isEmpty()) {

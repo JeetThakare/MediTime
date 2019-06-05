@@ -68,8 +68,10 @@ public class LoginActivity extends AppCompatActivity {
                                             System.out.println("role:" + role);
                                             if (role.equals("Doctor")) {
                                                 startActivity(new Intent(LoginActivity.this, DrHome.class));
+                                                finish();
                                             } else {
                                                 startActivity(new Intent(LoginActivity.this, PatientActivity.class));
+                                                finish();
                                             }
                                         } else {
                                             Log.d("Login role check", "No such document");

@@ -59,7 +59,7 @@ public class PatientActivity extends AppCompatActivity {
                 intent.putExtra("weekfreq", medicineList.get(position).getWeekFreq());
                 intent.putExtra("startdt", medicineList.get(position).getStartDate());
                 intent.putExtra("enddt", medicineList.get(position).getEndDate());
-                intent.putExtra("photourl", medicineList.get(position).getPhotoUrl());
+                intent.putExtra("photoUrl", medicineList.get(position).getPhotoUrl());
                 intent.putExtra("medicineID", medicineList.get(position).getMedicineID());
                 intent.putExtra("role", "Patient");
                 intent.putExtra("action", "PatientUpdate");
@@ -127,7 +127,7 @@ public class PatientActivity extends AppCompatActivity {
                                                 document.getString("PatientID"),
                                                 document.getString("dayFreq"),
                                                 document.getString("enddt"),
-                                                document.getString("photourl"),
+                                                document.getString("photoUrl"),
                                                 document.getString("startdt"),
                                                 document.getString("weekFreq"),
                                                 document.getId());
