@@ -15,7 +15,6 @@
         android:name="android.hardware.camera"
         android:required="true" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@drawable/meditime"
@@ -24,6 +23,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name=".MyPrescriptionActivity"></activity>
 
         <provider
             android:name="android.support.v4.content.FileProvider"
@@ -32,23 +32,27 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_path"></meta-data>
+                android:resource="@xml/file_path" />
         </provider>
-        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
-            See README(https://goo.gl/l4GJaQ) for more. -->
+        <!--
+ Set custom default icon. This is used when no icon is set for incoming notification messages.
+            See README(https://goo.gl/l4GJaQ) for more.
+        -->
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@drawable/heart_16" />
-        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
-             notification message. See README(https://goo.gl/6BKBk7) for more. -->
-
+        <!--
+ Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more.
+        -->
         <activity
             android:name=".EntryActivity"
-            android:screenOrientation="portrait"
             android:configChanges="orientation|keyboardHidden|screenSize"
+            android:screenOrientation="portrait"
             android:theme="@style/FullscreenTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -70,24 +74,31 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".PrescriptionActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".DrHome"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".PatientActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".medicineDetails"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".SignupActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".SplashActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".LoginActivity"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".PrescriptionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DrHome"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".PatientActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".medicineDetails"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SignupActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SplashActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".LoginActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <receiver
             android:name=".Alarm"
