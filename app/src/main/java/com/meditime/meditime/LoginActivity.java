@@ -83,8 +83,7 @@ public class LoginActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w("LogIn", "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed." + task.getException().toString(),
-                                    Toast.LENGTH_SHORT).show();
+                            Toast.makeText(LoginActivity.this, "Authentication failed.", Toast.LENGTH_SHORT).show();
 
                         }
                     }
@@ -103,7 +102,7 @@ public class LoginActivity extends AppCompatActivity {
         return true;
     }
 
-    private void setToken(){
+    private void setToken() {
         SharedPreferences pref = getSharedPreferences("MediPrefs", MODE_PRIVATE);
         Utils.setToken(pref.getString("token", null));
     }
