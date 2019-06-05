@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "662149061738-n6armhporqfqj6r4tocvflibb82gpgot.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.meditime.meditime",
+            "certificate_hash": "ea207bd22ffb055cac357d37aaf3132613896c79"
+          }
+        },
+        {
           "client_id": "662149061738-ii6hnrgotvsm8bnt223e4jl7o95bpn2u.apps.googleusercontent.com",
           "client_type": 3
         }
