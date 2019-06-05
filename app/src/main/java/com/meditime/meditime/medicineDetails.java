@@ -317,26 +317,57 @@ public class medicineDetails extends AppCompatActivity {
     private boolean validate() {
         if (name.getText().toString().isEmpty()) {
             name.setError("Name is required!");
+            name.requestFocus();
             return false;
         }
         if (schedule.getText().toString().isEmpty()) {
             schedule.setError("Schedule is required!");
+            schedule.requestFocus();
+            return false;
+        }
+        for (char c : schedule.getText().toString().toCharArray()) {
+            if (c != '1' && c != '0') {
+                schedule.setError("Schedule has incorrect format!");
+                schedule.requestFocus();
+                return false;
+            }
+        }
+
+        if (schedule.getText().toString().length() != 3) {
+            schedule.setError("Schedule has incorrect length format!");
+            schedule.requestFocus();
             return false;
         }
         if (frequency.getText().toString().isEmpty()) {
             frequency.setError("Weekly frequency is required!");
+            frequency.requestFocus();
+            return false;
+        }
+        for (char c : frequency.getText().toString().toCharArray()) {
+            if (c != '1' && c != '0') {
+                frequency.setError("Schedule has incorrect format!");
+                frequency.requestFocus();
+                return false;
+            }
+        }
+        if (frequency.getText().toString().length() != 7) {
+            frequency.setError("Schedule has incorrect format!");
+            frequency.requestFocus();
             return false;
         }
         if (startDate.getText().toString().isEmpty()) {
             name.setError("Name is required!");
+            startDate.requestFocus();
             return false;
         }
         if (endDate.getText().toString().isEmpty()) {
             endDate.setError("End date is required!");
+            endDate.requestFocus();
             return false;
         }
         if (!(validateEndDate())) {
             endDate.setError("End date should be after start date");
+            endDate.requestFocus();
             return false;
         }
         return true;
