@@ -253,9 +253,11 @@ public class medicineDetails extends AppCompatActivity {
                     sendNotification(medicineId);
                     if (action.contains("Patient")) {
                         startActivity(new Intent(medicineDetails.this, PatientActivity.class));
+                        finish();
                     } else {
                         Log.i("Pranay", "Patient email " + patientEmail);
                         startActivity(new Intent(medicineDetails.this, PrescriptionActivity.class).putExtra("email", patientEmail));
+                        finish();
                     }
                 }
             }).addOnFailureListener(new OnFailureListener() {
@@ -282,6 +284,7 @@ public class medicineDetails extends AppCompatActivity {
                     Toast.makeText(medicineDetails.this, "Medicine details added!", Toast.LENGTH_SHORT).show();
                     sendNotification(medicineId);
                     startActivity(new Intent(medicineDetails.this, PrescriptionActivity.class).putExtra("email", patientEmail));
+                    finish();
                 }
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
