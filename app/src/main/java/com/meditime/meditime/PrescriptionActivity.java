@@ -59,6 +59,9 @@ public class PrescriptionActivity extends AppCompatActivity {
                             name = document.getString("Name");
                             age = document.getString("Age");
                             gender = document.getString("Gender");
+                            nameTV.setText(name);
+                            ageTV.setText(age);
+                            genderTV.setText(gender);
                         } else {
                             Log.d("Login role check", "No such document");
                         }
@@ -75,10 +78,6 @@ public class PrescriptionActivity extends AppCompatActivity {
         ageTV = findViewById(R.id.ageTV);
         genderTV = findViewById(R.id.genderTV);
         medicineLV = findViewById(R.id.medicinelv);
-
-        nameTV.setText(name);
-        ageTV.setText(age);
-        genderTV.setText(gender);
 
         addmMdicines = findViewById(R.id.addMediBtn);
         addmMdicines.setOnClickListener(new View.OnClickListener() {
