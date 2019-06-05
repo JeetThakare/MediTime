@@ -217,7 +217,6 @@ public class medicineDetails extends AppCompatActivity {
                 datePickerDialog.show();
             }
         });
-
     }
 
 
@@ -236,11 +235,7 @@ public class medicineDetails extends AppCompatActivity {
         if (!validate()) {
             return;
         }
-//        ImageView v = (ImageView) findViewById(R.id.medicineIV);
-//        String currentImageName = String.valueOf(v.getTag());
-//        if (!(currentImageName.equals("medicine"))) {
-//            uploadPhoto();
-//        }
+
         auth = FirebaseAuth.getInstance();
         user = auth.getCurrentUser();
         if (action.contains("Update")) {
