@@ -139,6 +139,7 @@ public class EntryActivity extends AppCompatActivity {
                         } else {
                             Log.d("Splash", "No such document");
                             startActivity(new Intent(EntryActivity.this, SplashActivity.class));
+                            finish();
                         }
                         if (role.equals("Doctor")) {
                             startActivity(new Intent(EntryActivity.this, DrHome.class));
@@ -150,6 +151,7 @@ public class EntryActivity extends AppCompatActivity {
                     } else {
                         Log.d("Splash", "get failed with ", task.getException());
                         startActivity(new Intent(EntryActivity.this, SplashActivity.class));
+                        finish();
                     }
                 }
             });

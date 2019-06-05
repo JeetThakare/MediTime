@@ -79,7 +79,7 @@ public class PatientActivity extends AppCompatActivity {
         if(item.getItemId()==R.id.logoutMenuId){
             Toast.makeText(this,"You are logged out",Toast.LENGTH_SHORT).show();
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(PatientActivity.this,LoginActivity.class));
+            startActivity(new Intent(PatientActivity.this,SplashActivity.class));
             finish();
         }
         return true;

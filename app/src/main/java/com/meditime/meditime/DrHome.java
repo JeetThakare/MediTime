@@ -71,9 +71,8 @@ public class DrHome extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         if(item.getItemId()==R.id.logoutMenuId){
             Toast.makeText(this,"You are logged out",Toast.LENGTH_SHORT).show();
-
             FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(DrHome.this,LoginActivity.class));
+            startActivity(new Intent(DrHome.this,SplashActivity.class));
             finish();
         }
         return true;
