@@ -41,6 +41,12 @@ public class MyPrescriptionActivity extends AppCompatActivity {
 
         setTitle("My Prescription");
 
+        nameTV = findViewById(R.id.patientNameTV);
+        ageTV = findViewById(R.id.ageTV);
+        genderTV = findViewById(R.id.genderTV);
+        medicineLV = findViewById(R.id.medicinelv);
+
+
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
         if (user == null) {
@@ -49,28 +55,6 @@ public class MyPrescriptionActivity extends AppCompatActivity {
         }
 
         FirebaseFirestore db = FirebaseFirestore.getInstance();
-        DocumentReference docRef = db.collection("users").document(user.getEmail());
-        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        name = document.getString("Name");
-                        age = document.getString("Age");
-                        gender = document.getString("Gender");
-                        nameTV.setText(name);
-                        ageTV.setText(age);
-                        genderTV.setText(gender);
-                    } else {
-                        Log.d("Login role check", "No such document");
-                    }
-                } else {
-                    Log.d("Login role check", "get failed with ", task.getException());
-                }
-            }
-        });
-
 
         medicineLV = findViewById(R.id.medicinelv);
 
