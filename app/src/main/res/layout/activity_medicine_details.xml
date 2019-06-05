@@ -18,6 +18,7 @@
         android:layout_marginTop="26dp"
         android:layout_marginEnd="89dp"
         android:layout_marginBottom="489dp"
+        android:tag="medicine"
         app:srcCompat="@drawable/medicine" />
 
     <Button
@@ -205,6 +206,7 @@
         android:layout_marginBottom="40dp"
         android:background="#0099ff"
         android:text="Save"
+        android:onClick="saveMedicine"
         android:textColor="#ffffff"
         android:textSize="18dp"
         android:textStyle="bold" />

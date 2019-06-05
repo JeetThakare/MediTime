@@ -9,16 +9,25 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.icu.util.Calendar;
+
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.content.FileProvider;
+
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import android.util.Log;
+
 import android.text.InputType;
 import android.util.Log;
+
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.Button;
@@ -27,20 +36,29 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.internal.service.Common;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.FirebaseFirestore;
+
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.HashMap;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -51,6 +69,12 @@ public class medicineDetails extends AppCompatActivity {
     ImageView medicineImage;
     EditText name, schedule, frequency, startDate, endDate;
     private FirebaseAuth auth;
+
+    private FirebaseUser user;
+    private String action, medicineId, photoUrl = "", patientEmail;
+    private static DocumentReference mDocRef;
+    FirebaseFirestore db;
+
     private Calendar calendar1;
     private Calendar calendar2;
     private DatePickerDialog datePickerDialog;
@@ -63,44 +87,95 @@ public class medicineDetails extends AppCompatActivity {
     private String imageName;
     private byte[] byteData;
 
-
     private final int REQUEST_TAKE_PHOTO = 1;
 
     @Override
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_medicine_details);
         setTitle("Medicine Details");
-        photoBtn = (Button) findViewById(R.id.photoBtn);
-        saveBtn = findViewById(R.id.saveBtn);
-        medicineImage = (ImageView) findViewById(R.id.medicineIV);
+        db = FirebaseFirestore.getInstance();
 
+        photoBtn = findViewById(R.id.photoBtn);
+        saveBtn = findViewById(R.id.saveBtn);
+        medicineImage = findViewById(R.id.medicineIV);
         name = findViewById(R.id.nameET);
         schedule = findViewById(R.id.scheduleET);
         frequency = findViewById(R.id.frequencyET);
         startDate = findViewById(R.id.startDateET);
-        startDate.setInputType(InputType.TYPE_NULL);
+        endDate = findViewById(R.id.endDateET);
+
         calendar1 = Calendar.getInstance();
         calendar2 = Calendar.getInstance();
-        endDate = findViewById(R.id.endDateET);
-        endDate.setInputType(InputType.TYPE_NULL);
 
         auth = FirebaseAuth.getInstance();
+
         FirebaseUser user = auth.getCurrentUser();
         storage = FirebaseStorage.getInstance();
         mstorageReference = storage.getReference();
 
+        user = auth.getCurrentUser();
+        if (user == null) {
+            startActivity(new Intent(this, SplashActivity.class));
+        }
 
         Intent intent = getIntent();
-        if (intent.getStringExtra("email") == null) {
+        if (intent.getStringExtra("action") != null) {
+            action = intent.getStringExtra("action");
+            patientEmail = intent.getStringExtra("email");
+        }
+
+        if (action.contains("Update")) {
+            medicineId = intent.getStringExtra("medicineID");
+            startDate.setInputType(InputType.TYPE_NULL);
+            endDate = findViewById(R.id.endDateET);
+            endDate.setInputType(InputType.TYPE_NULL);
+
+            DocumentReference docRef = db.collection("medicines").document(medicineId);
+
+
+            docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                    if (task.isSuccessful()) {
+                        DocumentSnapshot document = task.getResult();
+                        if (document.exists()) {
+                            name.setText(document.getString("Name"));
+                            schedule.setText(document.getString("dayFreq"));
+                            endDate.setText(document.getString("enddt"));
+                            if (document.getString("photoUrl") != null && !document.getString("photoUrl").isEmpty()) {
+                                try {
+                                    medicineImage.setImageBitmap(GetImageBitmapFromUrl(document.getString("photoUrl")));
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                                //medicineImage.setImageURI(null);
+                                //medicineImage.setImageURI(Uri.parse(document.getString("photoUrl")));
+                            }
+                            startDate.setText(document.getString("startdt"));
+                            frequency.setText(document.getString("weekFreq"));
+                        } else {
+                            Log.d(medicineDetails.class.getSimpleName(), "No such document");
+                        }
+                    } else {
+                        Log.d(medicineDetails.class.getSimpleName(), "get failed with ", task.getException());
+                    }
+                }
+            });
+            /*
             name.setText(intent.getStringExtra("name"));
             schedule.setText(intent.getStringExtra("schedule"));
             frequency.setText(intent.getStringExtra("weekfreq"));
             startDate.setText(intent.getStringExtra("startdt"));
             endDate.setText(intent.getStringExtra("enddt"));
-//            set medicineImage url
+            photoUrl = intent.getStringExtra("photourl");
+            //medicineImage.setImageURI(Uri.parse(photoUrl));
+            */
         }
-        if (intent.getStringExtra("role").matches("Patient")) {
+
+
+        if (action.contains("Patient")) {
             name.setFocusable(false);
             schedule.setFocusable(false);
             frequency.setFocusable(false);
@@ -130,20 +205,13 @@ public class medicineDetails extends AppCompatActivity {
             }
         });
 
-        saveBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (validate()) {
-                    uploadPhoto();
-                    System.out.println("Data Validated");
-                }
-            }
-        });
 
         startDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                calendar=Calendar.getInstance();
+                if (action.contains("Patient")) {
+                    return;
+                }
                 int day = calendar1.get(Calendar.DAY_OF_MONTH);
                 int month = calendar1.get(Calendar.MONTH);
                 int year = calendar1.get(Calendar.YEAR);
@@ -161,34 +229,97 @@ public class medicineDetails extends AppCompatActivity {
         endDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                calendar=Calendar.getInstance();
                 int day = calendar2.get(Calendar.DAY_OF_MONTH);
                 int month = calendar2.get(Calendar.MONTH);
                 int year = calendar2.get(Calendar.YEAR);
-
 
                 datePickerDialog = new DatePickerDialog(medicineDetails.this, new DatePickerDialog.OnDateSetListener() {
                     @Override
                     public void onDateSet(DatePicker view, int myear, int mmonth, int mday) {
                         SimpleDateFormat sdf = new SimpleDateFormat("mm/dd/yyyy");
                         endDate.setText(mmonth + 1 + "/" + mday + "/" + myear);
-
                     }
                 }, month, day, year);
                 datePickerDialog.show();
             }
         });
+
     }
 
-    public void capturePhoto(View view) {
-        if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
+    private Bitmap GetImageBitmapFromUrl(String url) throws IOException {
+        Bitmap imageBitmap = null;
+        URL imgUrl = new URL(url);
+        try {
+            imageBitmap = BitmapFactory.decodeStream(imgUrl.openConnection().getInputStream());
+        }catch (Exception e){
+
+        }
+        return imageBitmap;
+    }
+
+    public void saveMedicine(View view) {
+        if (!validate()) {
+            return;
+        }
+//        ImageView v = (ImageView) findViewById(R.id.medicineIV);
+//        String currentImageName = String.valueOf(v.getTag());
+//        if (!(currentImageName.equals("medicine"))) {
+//            uploadPhoto();
+//        }
+
+        if (action.contains("Update")) {
+            mDocRef = FirebaseFirestore.getInstance().document("medicines/" + medicineId);
+            mDocRef.update(
+                    "Name", name.getText().toString(),
+                    "dayFreq", schedule.getText().toString(),
+                    "weekFreq", frequency.getText().toString(),
+                    "startdt", startDate.getText().toString(),
+                    "enddt", endDate.getText().toString()
+            ).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(medicineDetails.this, "Medicine details Updated!", Toast.LENGTH_SHORT).show();
+                    sendNotification(medicineId);
+                    if (action.contains("Patient")) {
+                        startActivity(new Intent(medicineDetails.this, PatientActivity.class));
+                    } else {
+                        Log.i("Pranay", "Patient email " + patientEmail);
+                        startActivity(new Intent(medicineDetails.this, PrescriptionActivity.class).putExtra("email", patientEmail));
+                    }
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e(medicineDetails.class.getSimpleName(), "medicine update failed " + e.toString());
+                }
+            });
         } else {
-            Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cameraIntent, 1888);
+            mDocRef = FirebaseFirestore.getInstance().collection("medicines").document();
+            HashMap<String, String> data = new HashMap<>();
+            data.put("Name", name.getText().toString());
+            data.put("dayFreq", schedule.getText().toString());
+            data.put("weekFreq", frequency.getText().toString());
+            data.put("startdt", startDate.getText().toString());
+            data.put("enddt", endDate.getText().toString());
+            data.put("photoUrl", photoUrl);
+            data.put("DoctorID", user.getEmail());
+            data.put("PatientID", patientEmail);
+
+            mDocRef.set(data).addOnSuccessListener(new OnSuccessListener<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    Toast.makeText(medicineDetails.this, "Medicine details added!", Toast.LENGTH_SHORT).show();
+                    sendNotification(medicineId);
+                    startActivity(new Intent(medicineDetails.this, PrescriptionActivity.class));
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.e(medicineDetails.class.getSimpleName(), "medicine adding failed " + e.toString());
+                }
+            });
         }
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -202,6 +333,7 @@ public class medicineDetails extends AppCompatActivity {
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
             byteData = baos.toByteArray();
+            uploadPhoto();
         }
 
     }
@@ -220,7 +352,7 @@ public class medicineDetails extends AppCompatActivity {
             return false;
         }
         if (startDate.getText().toString().isEmpty()) {
-            startDate.setError("Start date is required!");
+            name.setError("Name is required!");
             return false;
         }
         if (endDate.getText().toString().isEmpty()) {
@@ -231,9 +363,7 @@ public class medicineDetails extends AppCompatActivity {
             endDate.setError("End date should be after start date");
             return false;
         }
-
         return true;
-
     }
 
     private boolean validateEndDate() {
@@ -247,13 +377,21 @@ public class medicineDetails extends AppCompatActivity {
             e.printStackTrace();
         }
         return false;
+    }
 
-
+    private void sendNotification(String medicineId) {
+        NotificationHelper notif = new NotificationHelper();
+        if (action.contains("Patient")) {
+            return;
+        }
+        notif.sendNotification(patientEmail, "Medicine Update",
+                "Doctor has updated you medicine details, Please Checkout!",
+                medicineId, Constants.SCHEDULE_UPDATE_COMMAND);
     }
 
     private void uploadPhoto() {
         Uri file = Uri.fromFile(new File("/Android/data/com.meditime.meditime/files/Pictures/" + imageName));
-        StorageReference fileRef = mstorageReference.child(imageName);
+        final StorageReference fileRef = mstorageReference.child(imageName);
         StorageReference reference = mstorageReference.child("uploads/" + imageName);
         fileRef.getName().equals(reference.getName());
         fileRef.getPath().equals(reference.getPath());
@@ -268,12 +406,31 @@ public class medicineDetails extends AppCompatActivity {
             @Override
             public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                 System.out.println("image sent");
+//                photoUrl=fileRef.getDownloadUrl().getResult().toString();
+//                System.out.println("URL " + photoUrl);
                 taskSnapshot.getStorage().getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                     @Override
                     public void onComplete(@NonNull Task<Uri> task) {
                         Uri downloadUri = task.getResult();
                         Log.i(medicineDetails.class.getSimpleName(), downloadUri.toString());
+                        photoUrl = downloadUri.toString();
+                        mDocRef = FirebaseFirestore.getInstance().document("medicines/" + medicineId);
+                        mDocRef.update(
+                                "photoUrl", photoUrl
+                        ).addOnSuccessListener(new OnSuccessListener<Void>() {
+                            @Override
+                            public void onSuccess(Void aVoid) {
+
+                            }
+                        }).addOnFailureListener(new OnFailureListener() {
+                            @Override
+                            public void onFailure(@NonNull Exception e) {
+
+                            }
+                        });
                     }
+
+
                 });
             }
         });
@@ -292,7 +449,7 @@ public class medicineDetails extends AppCompatActivity {
         System.out.println(currentPhotoPath);
         imageName = currentPhotoPath.substring(70);
         System.out.println(imageName);
+
         return image;
     }
-
 }
