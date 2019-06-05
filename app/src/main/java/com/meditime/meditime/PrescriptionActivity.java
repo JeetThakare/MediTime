@@ -88,10 +88,11 @@ public class PrescriptionActivity extends AppCompatActivity {
                 intent.putExtra("role", "Doctor");
                 intent.putExtra("action", "DoctorAdd");
                 startActivity(intent);
+                //finish();// new line added
             }
         });
 
-        showMedicines(user);
+//        showMedicines(user);
 
         medicineLV.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -108,6 +109,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                 intent1.putExtra("email", patientemail);
                 intent1.putExtra("action", "DoctorUpdate");
                 startActivity(intent1);
+                //finish();//new line added
             }
         });
     }
@@ -117,11 +119,13 @@ public class PrescriptionActivity extends AppCompatActivity {
         super.onResume();
         mAuth = FirebaseAuth.getInstance();
         final FirebaseUser user = mAuth.getCurrentUser();
+
         showMedicines(user);
     }
 
     public void showMedicines(FirebaseUser user) {
-
+        medicineList.clear();
+        System.out.println("Size of medicine array list before:"+ medicineList.size());
         FirebaseFirestore db = FirebaseFirestore.getInstance();
 
         db.collection("medicines")
@@ -141,6 +145,7 @@ public class PrescriptionActivity extends AppCompatActivity {
                             }
                             adapter = new ArrayAdapter(PrescriptionActivity.this, android.R.layout.simple_list_item_1, medicineList);
                             medicineLV.setAdapter(adapter);
+                            System.out.println("Size of medicine array list before:"+ medicineList.size());
                         } else {
                             Log.d("DB", "Error getting documents: ", task.getException());
                         }

@@ -157,6 +157,7 @@ public class EntryActivity extends AppCompatActivity {
             });
         } else {
             startActivity(new Intent(EntryActivity.this, SplashActivity.class));
+            finish();
         }
     }
 
